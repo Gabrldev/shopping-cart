@@ -1,22 +1,21 @@
-import { useState } from 'react'
 import Products from './components/Products'
 import data from './data/data.json'
 import Header from './components/Header'
 import { useFilter } from './hooks/useFilter'
-import Footer from './components/Footer'
+import Cart from './components/Cart'
+import { CartProvider } from './context/cart'
 function App () {
-  const [products] = useState(data)
-  const { filterProducts, setFilter } = useFilter()
-  const filteredProducts = filterProducts(products)
+  const { filterProducts } = useFilter()
+  const filteredProducts = filterProducts(data)
 
   return (
-    <>
-      <Header changeFilter={setFilter} />
+    <CartProvider>
       <main>
+        <Header />
+        <Cart />
         <Products products={filteredProducts} />
       </main>
-      <Footer />
-    </>
+    </CartProvider>
   )
 }
 

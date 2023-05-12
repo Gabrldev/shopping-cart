@@ -1,20 +1,19 @@
-import { useState, useId } from 'react'
+import { useId } from 'react'
+import { useFilter } from '../hooks/useFilter'
 
-function Filters ({ changeFilter }) {
-  const [minPrince, setMinPrince] = useState(0)
-
+function Filters () {
+  const { setFilter, filter } = useFilter()
   const filterId = useId()
   const category = useId()
 
   const handleChangeMinPrince = (event) => {
-    setMinPrince(event.target.value)
-    changeFilter(prevState => ({
+    setFilter(prevState => ({
       ...prevState,
       minPrice: event.target.value
     }))
   }
   const handleChangeCategory = (event) => {
-    changeFilter(prevState => ({
+    setFilter(prevState => ({
       ...prevState,
       category: event.target.value
     }))
@@ -31,8 +30,9 @@ function Filters ({ changeFilter }) {
           max='1000'
           step='1'
           onChange={handleChangeMinPrince}
+          value={filter.minPrice}
         />
-        <span>{minPrince}</span>
+        <span>{filter.minPrice}</span>
       </div>
       <div className='filter'>
         <label htmlFor={category}>Categoria</label>

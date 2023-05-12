@@ -1,5 +1,8 @@
 import './Products.css'
+import { useCart } from '../hooks/useCart'
 const Products = ({ products }) => {
+  const { addCart, cart } = useCart()
+  console.log(cart)
   return (
     <section className='products'>
       <ul>
@@ -8,7 +11,7 @@ const Products = ({ products }) => {
             <img src={pruduct.image} alt={pruduct.title} />
             <h3>{pruduct.title}</h3>
             <p>${pruduct.price}</p>
-            <button>Add cart</button>
+            <button onClick={() => addCart(pruduct)}>Add cart</button>
           </li>
         ))}
       </ul>
