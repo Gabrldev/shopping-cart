@@ -1,8 +1,21 @@
-import { useId } from 'react'
+import { useEffect, useId, useState } from 'react'
 import './Cart.css'
+import { useCart } from '../hooks/useCart'
 
 function Cart () {
+  const { cart, addToCart, clearCart } = useCart()
   const cartChecBoxId = useId()
+  const [totalPrice, setTotalPrice] = useState(0)
+
+  useEffect(() => {
+    const item = cart.reduce((acc, product) => {
+      return acc + product.price * product.quantity
+    }, 0)
+
+    const total = item.toFixed(2)
+    const toNumber = Number(total)
+    setTotalPrice(toNumber)
+  }, [cart])
   return (
     <>
       <label className='cart-button' htmlFor={cartChecBoxId}>
@@ -12,19 +25,26 @@ function Cart () {
 
       <aside className='cart'>
         <ul>
-          <li>
-            <img src='https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg' alt='' />
-            <div>
-              <strong>Monitor</strong> $500
-            </div>
-            <footer>
-              <small>Qty:1</small>
-              <button>+</button>
-            </footer>
-          </li>
-
+          {cart.map(product => {
+            return (
+              <li key={product.id}>
+                <img src={product.image} alt={product.title} />
+                <div>
+                  <strong>{product.title}</strong> {product.price}
+                </div>
+                <footer>
+                  <small>{product.quantity}</small>
+                  <button onClick={() => addToCart(product)}>+</button>
+                </footer>
+              </li>
+            )
+          })}
         </ul>
-        <button>Clear</button>
+        <div className='total'>
+          <strong>Total:{totalPrice} </strong>
+
+        </div>
+        <button onClick={clearCart}>Clear</button>
       </aside>
     </>
   )
